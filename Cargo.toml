@@ -1,5 +1,5 @@
 [package]
-name = "plotters-egui-exmpl-parabola"
+name = "egui-plotter-simple"
 version = "0.1.0"
 edition = "2021"
 
@@ -7,5 +7,6 @@ edition = "2021"
 
 [dependencies]
 plotters = "0.3.5"
-egui-plotter = "0.3"
+#egui-plotter = "0.3"
+egui-plotter = { git = "https://github.com/winksaville/egui-plotter.git", branch = "update-eframe-egui-to-0.23" }
 eframe = "0.23.0"
