@@ -48,6 +48,7 @@ impl eframe::App for Simple {
             let mut chart = ChartBuilder::on(&root)
                 .caption("y=x^2", ("sans-serif", 50).into_font())
                 .margin(5)
+                .margin_right(20) // Extend the right margin so the last x-axis label value, 1.0, is not clipped
                 .x_label_area_size(30)
                 .y_label_area_size(30)
                 .build_cartesian_2d(-1f32..1f32, -0.1f32..1f32)
