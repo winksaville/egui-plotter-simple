@@ -4,10 +4,23 @@ use plotters::prelude::*;
 
 fn main() {
     let native_options = eframe::NativeOptions::default();
+
+    // These much less succinct than the original code:
+    //   `Box::new(|cc| Box::new(Simple::new(cc))),`
+    // But I wanted to get a better idea of what was really going on and
+    // I couldn't come up with the right syntax. So I had ChatGPT-4
+    // help me out, see the end of this conversation:
+    //   https://chat.openai.com/share/945e3201-1198-4122-9650-261c9fd5c55b
+    let simple_creator = move |cc: &eframe::CreationContext<'_>| {
+        let simple_instance = Simple::new(cc);
+        Box::new(simple_instance)
+    };
+    let app_creator: Box<dyn FnOnce(&eframe::CreationContext<'_>) -> Box<dyn eframe::App>> = Box::new(move |cc| simple_creator(cc));
+
     eframe::run_native(
         "Simple Example",
         native_options,
-        Box::new(|cc| Box::new(Simple::new(cc))),
+        app_creator,
     )
     .unwrap();
 }
