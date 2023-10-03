@@ -15,9 +15,9 @@ fn main() {
         let simple_instance = Simple::new(cc);
         Box::new(simple_instance)
     };
-    #[allow(clippy::type_complexity)]
-    let app_creator: Box<dyn FnOnce(&eframe::CreationContext<'_>) -> Box<dyn eframe::App>> =
-        Box::new(move |cc| simple_creator(cc));
+    // Subsequently, I figured out that using type `eframe::AppCreator` removed
+    // the need for the `#[allow(clippy::type_complexity)]` attribute.
+    let app_creator: eframe::AppCreator = Box::new(move |cc| simple_creator(cc));
 
     eframe::run_native("Simple Example", native_options, app_creator).unwrap();
 }
