@@ -5,7 +5,7 @@ use plotters::prelude::*;
 fn main() {
     let native_options = eframe::NativeOptions::default();
 
-    // These much less succinct than the original code:
+    // This is much less succinct than the original code:
     //   `Box::new(|cc| Box::new(Simple::new(cc))),`
     // But I wanted to get a better idea of what was really going on and
     // I couldn't come up with the right syntax. So I had ChatGPT-4
@@ -15,14 +15,11 @@ fn main() {
         let simple_instance = Simple::new(cc);
         Box::new(simple_instance)
     };
-    let app_creator: Box<dyn FnOnce(&eframe::CreationContext<'_>) -> Box<dyn eframe::App>> = Box::new(move |cc| simple_creator(cc));
+    #[allow(clippy::type_complexity)]
+    let app_creator: Box<dyn FnOnce(&eframe::CreationContext<'_>) -> Box<dyn eframe::App>> =
+        Box::new(move |cc| simple_creator(cc));
 
-    eframe::run_native(
-        "Simple Example",
-        native_options,
-        app_creator,
-    )
-    .unwrap();
+    eframe::run_native("Simple Example", native_options, app_creator).unwrap();
 }
 
 struct Simple;
@@ -61,16 +58,16 @@ impl eframe::App for Simple {
             chart
                 .draw_series(LineSeries::new(
                     (-50..=50).map(|x| x as f32 / 50.0).map(|x| (x, x * x)),
-                    &RED,
+                    RED,
                 ))
                 .unwrap()
                 .label("y = x^2")
-                .legend(|(x, y)| PathElement::new(vec![(x, y), (x + 20, y)], &RED));
+                .legend(|(x, y)| PathElement::new(vec![(x, y), (x + 20, y)], RED));
 
             chart
                 .configure_series_labels()
-                .background_style(&WHITE.mix(0.8))
-                .border_style(&BLACK)
+                .background_style(WHITE.mix(0.8))
+                .border_style(BLACK)
                 .draw()
                 .unwrap();
 
